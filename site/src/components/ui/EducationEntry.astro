@@ -1,0 +1,57 @@
+---
+interface Props {
+  title: string;
+  institution: string;
+  period: string;
+  description: string;
+  link?: { text: string; href: string };
+  open?: boolean;
+}
+
+const { title, institution, period, description, link, open = false } = Astro.props;
+---
+<details class="group border border-gray-200 rounded-xl overflow-hidden" open={open}>
+  <summary
+    class="flex items-center justify-between px-6 py-4 cursor-pointer list-none
+           bg-white hover:bg-gray-50 transition-colors duration-200"
+  >
+    <div>
+      <h3 class="font-serif text-base text-gray-900 group-open:text-brand transition-colors">
+        {title}
+      </h3>
+      <p class="text-xs text-gray-400 mt-0.5">{institution} · {period}</p>
+    </div>
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      width="16"
+      height="16"
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      stroke-width="2"
+      stroke-linecap="round"
+      stroke-linejoin="round"
+      class="text-gray-400 shrink-0 transition-transform duration-200 group-open:rotate-180"
+    >
+      <path d="m6 9 6 6 6-6"/>
+    </svg>
+  </summary>
+  <div class="px-6 py-4 bg-white border-t border-gray-100 text-sm text-gray-600 leading-relaxed">
+    <p>{description}</p>
+    {link && (
+      <a
+        href={link.href}
+        target="_blank"
+        rel="noopener noreferrer"
+        class="inline-flex items-center gap-1 mt-3 text-brand hover:underline text-sm font-medium"
+      >
+        {link.text}
+        <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/>
+          <polyline points="15 3 21 3 21 9"/>
+          <line x1="10" y1="14" x2="21" y2="3"/>
+        </svg>
+      </a>
+    )}
+  </div>
+</details>

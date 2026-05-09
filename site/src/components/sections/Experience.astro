@@ -1,0 +1,101 @@
+---
+import TimelineEntry from '@components/ui/TimelineEntry.astro';
+
+const jobs = [
+  {
+    title: 'Sales Engineer',
+    company: 'Brightcove',
+    period: '2019 – Present',
+    bullets: [
+      'Took successful technical ownership of over 50 accounts, including key customers, requiring technical assistance to complete their migration from Ooyala to Brightcove.',
+      'Prepare and deliver technical presentations explaining Brightcove products or services to customers and prospective customers.',
+      'Confer with customers and engineers to assess equipment needs and determine system requirements.',
+      'Collaborate with sales teams to understand customer requirements and provide sales support.',
+    ],
+  },
+  {
+    title: 'Technical Support Manager, Americas',
+    company: 'Ooyala',
+    period: '2018 – 2019',
+    bullets: [
+      'Improved CSAT score (from 8.0 to 9.5) and relationship with key customers by implementing a new Support program based on customer ACV.',
+      'Improved Engineering Management visibility on platform uptime by reporting incidents monthly and proposing action items.',
+      'Started a Data Analysis team to provide visibility on product issues across the company.',
+      'Developed and promoted a Technical Support Engineer into Team Lead; expanded Tech Support to Ukraine via outsourcing.',
+    ],
+  },
+  {
+    title: 'Technical Support Team Lead',
+    company: 'Ooyala',
+    period: '2016 – 2018',
+    bullets: [
+      'Increased global CSAT response rate from 3% to 20% by implementing a new CSAT tool and deploying global best practices.',
+      'Implemented a new SME program locally then globally to improve communication between Technical Support and Engineering/Product teams.',
+      'Assisted with recruiting and training for a new Tech Support team in Chennai, India.',
+      'Developed and promoted 4 Tech Support Engineers from Tier 1 to Tier 2.',
+    ],
+  },
+  {
+    title: 'Technical Support Shift Lead',
+    company: 'Ooyala',
+    period: '2016',
+    bullets: [
+      'Reduced customer escalations by implementing a handoff process to drive and track case handoff across multiple regions.',
+      'Acted as quality control on the support team\'s daily operations; balanced workload among on-call engineers and provided training and coaching.',
+      'Served as first point of escalation on any support incident and facilitated communication between internal and external customers.',
+    ],
+  },
+  {
+    title: 'Senior Technical Support Engineer',
+    company: 'Ooyala',
+    period: '2014 – 2016',
+    bullets: [
+      'Reduced escalations to Engineering as SME for Player and Mobile SDK (iOS and Android).',
+      'Implemented regular training sessions across the Tech Support Team; opened communication channels with Product and other stakeholders.',
+      'Achieved highest CSAT score (9.5) both years, being the greatest team contributor for this KPI.',
+      'Handled internal escalations on complex technical and customer-handling cases, driving them toward resolution.',
+    ],
+  },
+  {
+    title: 'Software Engineer',
+    company: 'IBM',
+    period: '2012 – 2014',
+    bullets: [
+      'After 6 months, took ownership of the most demanding build — the foundation for at least 5 major products.',
+      'Improved build time by 30% by automating processes using ANT and Bash scripting.',
+      'Minimized dependency on developers by troubleshooting and identifying bugs and their source.',
+      'Reduced build server manual maintenance tasks through Bash scripting automation.',
+    ],
+  },
+  {
+    title: 'Jr Security Consultant',
+    company: 'ITlligent',
+    period: '2011 – 2012',
+    bullets: [
+      'Risk assessment, penetration testing, vulnerability assessment, and network monitoring for a wide range of companies from Mexico and LATAM.',
+    ],
+  },
+];
+---
+<section id="experience" class="py-20 px-8 md:px-16 bg-sidebar-bg">
+  <div class="max-w-4xl">
+    <!-- Heading -->
+    <div class="animate-on-scroll mb-12">
+      <p class="text-brand text-xs font-semibold uppercase tracking-widest mb-2">Experience</p>
+      <h2 class="font-serif text-3xl md:text-4xl text-gray-900">Work Experience</h2>
+      <div class="w-12 h-0.5 bg-brand mt-4"></div>
+    </div>
+
+    <!-- Timeline -->
+    <ul class="relative border-l border-gray-200 ml-1.5">
+      {jobs.map((job) => (
+        <TimelineEntry
+          title={job.title}
+          company={job.company}
+          period={job.period}
+          bullets={job.bullets}
+        />
+      ))}
+    </ul>
+  </div>
+</section>

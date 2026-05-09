@@ -1,0 +1,121 @@
+---
+import BaseLayout from './BaseLayout.astro';
+import Sidebar from '@components/layout/Sidebar.astro';
+import Footer from '@components/layout/Footer.astro';
+
+interface Props {
+  title?: string;
+  description?: string;
+}
+
+const { title, description } = Astro.props;
+---
+<BaseLayout title={title} description={description}>
+  <div id="page" class="flex min-h-screen">
+    <!-- Sidebar overlay for mobile -->
+    <div
+      id="sidebar-overlay"
+      class="fixed inset-0 bg-black/40 z-20 hidden lg:hidden"
+      aria-hidden="true"
+    ></div>
+
+    <Sidebar />
+
+    <main
+      id="main-content"
+      class="flex-1 lg:ml-[300px] min-h-screen"
+    >
+      <slot />
+      <Footer />
+    </main>
+  </div>
+
+  <script>
+    const burger = document.getElementById('burger-btn');
+    const sidebar = document.getElementById('sidebar');
+    const overlay = document.getElementById('sidebar-overlay');
+
+    function openSidebar() {
+      sidebar?.classList.remove('-translate-x-full');
+      overlay?.classList.remove('hidden');
+      document.body.style.overflow = 'hidden';
+    }
+
+    function closeSidebar() {
+      sidebar?.classList.add('-translate-x-full');
+      overlay?.classList.add('hidden');
+      document.body.style.overflow = '';
+    }
+
+    burger?.addEventListener('click', () => {
+      const isOpen = !sidebar?.classList.contains('-translate-x-full');
+      isOpen ? closeSidebar() : openSidebar();
+    });
+
+    overlay?.addEventListener('click', closeSidebar);
+
+    // Close on nav link click (mobile)
+    document.querySelectorAll('#sidebar nav a').forEach((link) => {
+      link.addEventListener('click', () => {
+        if (window.innerWidth < 1024) closeSidebar();
+      });
+    });
+
+    // Scroll-spy: highlight active nav section
+    const sections = document.querySelectorAll('section[id]');
+    const navLinks = document.querySelectorAll('#sidebar nav a[href^="/#"]');
+
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            navLinks.forEach((link) => {
+              const href = link.getAttribute('href');
+              const isActive = href === `/#${entry.target.id}`;
+              link.classList.toggle('text-brand', isActive);
+              link.classList.toggle('font-semibold', isActive);
+              link.classList.toggle('text-gray-600', !isActive);
+            });
+          }
+        });
+      },
+      { rootMargin: '-40% 0px -55% 0px' }
+    );
+
+    sections.forEach((section) => observer.observe(section));
+
+    // Animate on scroll
+    const animatedEls = document.querySelectorAll('.animate-on-scroll');
+    const animObserver = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            entry.target.classList.add('is-visible');
+            animObserver.unobserve(entry.target);
+          }
+        });
+      },
+      { threshold: 0.1 }
+    );
+
+    animatedEls.forEach((el) => animObserver.observe(el));
+
+    // Skill bar animations
+    const skillBars = document.querySelectorAll<HTMLElement>('.skill-bar-fill');
+    const skillObserver = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            const el = entry.target as HTMLElement;
+            const width = el.dataset.width ?? '0';
+            el.style.width = `${width}%`;
+            skillObserver.unobserve(el);
+          }
+        });
+      },
+      { threshold: 0.3 }
+    );
+
+    skillBars.forEach((bar) => skillObserver.observe(bar));
+  </script>
+</BaseLayout>

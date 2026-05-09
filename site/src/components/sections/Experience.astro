@@ -3,90 +3,65 @@ import TimelineEntry from '@components/ui/TimelineEntry.astro';
 
 const jobs = [
   {
+    title: 'Senior Solutions Engineer',
+    company: 'Amagi · Remote, US',
+    period: 'May 2024 – Present',
+    bullets: [
+      'Lead pre-sales for the Sports vertical across North America, carrying 20 active opportunities spanning RSN, FAST, league rights holders, and OTT D2C — among the highest active opportunity loads on the Americas SE team.',
+      'Authored the Technical Discovery framework (channel architecture mapping, programming matrix, contribution path analysis, scheduling dependency modeling) — now cited in Amagi\'s official SE Reference Guide as the canonical discovery model for new opportunities globally.',
+      'Drove a dual-opportunity engagement at a major regional sports network covering both Master Control Room migration and FAST channel re-launch — produced full discovery, phased Crawl-Walk-Run migration proposal covering 1,080+ live events annually, and two SOWs; maintained commercial momentum through a mid-cycle AE transition with zero stalled progress.',
+      'Drove the technical close for a major tennis broadcaster on a leading streaming marketplace, translating the bespoke solution into a productized Single Live Event capability now generally available in Amagi\'s product suite.',
+      'Stepped across pod boundaries to author two expansion SOWs for a major Spanish-language broadcaster in the US, preserving commercial momentum on a $230K RFP and adjacent expansion work.',
+      'Apply MEDDPICC consistently across pipeline qualification, technical proposal authoring, and SOW design.',
+    ],
+  },
+  {
+    title: 'Solutions Engineer',
+    company: 'Amagi · Remote, US',
+    period: 'September 2022 – May 2024',
+    bullets: [
+      'Migrated 10 Tier-3 broadcast channels for a major Spanish-language broadcaster from on-prem to cloud playout as a DR cost-reduction initiative — owned the full POC, co-designed playout architecture (GCP Interconnect, Ateme Cloud Gateways, SRT-to-SDI conversion), authored the SOW, and ran on-site testing. Delivered 25% operational cost reduction.',
+      'Designed and led implementation of an automated FAST workflow for a major US news network — ingesting MRSS feeds into one-hour programming blocks via Amagi CLOUDPORT, Scheduler, and custom Python. Delivered a 24/7 autonomous channel requiring zero human monitoring; pattern subsequently replicated for two additional international editions.',
+    ],
+  },
+  {
     title: 'Sales Engineer',
-    company: 'Brightcove',
-    period: '2019 – Present',
+    company: 'Bitmovin · Remote, US',
+    period: 'August 2021 – August 2022',
     bullets: [
-      'Took successful technical ownership of over 50 accounts, including key customers, requiring technical assistance to complete their migration from Ooyala to Brightcove.',
-      'Prepare and deliver technical presentations explaining Brightcove products or services to customers and prospective customers.',
-      'Confer with customers and engineers to assess equipment needs and determine system requirements.',
-      'Collaborate with sales teams to understand customer requirements and provide sales support.',
+      'Pre-sales lead for live-streaming and player technology across enterprise media customers in North America.',
+      'Designed low-latency live workflows; partnered with engineering on playback optimization yielding 10% startup-time improvement on customer deployments.',
     ],
   },
   {
-    title: 'Technical Support Manager, Americas',
-    company: 'Ooyala',
-    period: '2018 – 2019',
+    title: 'Sales Engineer',
+    company: 'Brightcove · Guadalajara, MX',
+    period: 'April 2019 – August 2021',
     bullets: [
-      'Improved CSAT score (from 8.0 to 9.5) and relationship with key customers by implementing a new Support program based on customer ACV.',
-      'Improved Engineering Management visibility on platform uptime by reporting incidents monthly and proposing action items.',
-      'Started a Data Analysis team to provide visibility on product issues across the company.',
-      'Developed and promoted a Technical Support Engineer into Team Lead; expanded Tech Support to Ukraine via outsourcing.',
+      'Pre-sales for OVP and OTT customers across web, mobile, and connected TV in LATAM and North America.',
+      'Led technical migration of 50+ enterprise customers from Ooyala to Brightcove — competitive displacement spanning architecture redesign, encoding profiles, DRM, and analytics integration.',
     ],
   },
   {
-    title: 'Technical Support Team Lead',
-    company: 'Ooyala',
-    period: '2016 – 2018',
+    title: 'Streaming Engineering Foundation',
+    company: 'Ooyala & IBM',
+    period: '2012 – 2019',
     bullets: [
-      'Increased global CSAT response rate from 3% to 20% by implementing a new CSAT tool and deploying global best practices.',
-      'Implemented a new SME program locally then globally to improve communication between Technical Support and Engineering/Product teams.',
-      'Assisted with recruiting and training for a new Tech Support team in Chennai, India.',
-      'Developed and promoted 4 Tech Support Engineers from Tier 1 to Tier 2.',
-    ],
-  },
-  {
-    title: 'Technical Support Shift Lead',
-    company: 'Ooyala',
-    period: '2016',
-    bullets: [
-      'Reduced customer escalations by implementing a handoff process to drive and track case handoff across multiple regions.',
-      'Acted as quality control on the support team\'s daily operations; balanced workload among on-call engineers and provided training and coaching.',
-      'Served as first point of escalation on any support incident and facilitated communication between internal and external customers.',
-    ],
-  },
-  {
-    title: 'Senior Technical Support Engineer',
-    company: 'Ooyala',
-    period: '2014 – 2016',
-    bullets: [
-      'Reduced escalations to Engineering as SME for Player and Mobile SDK (iOS and Android).',
-      'Implemented regular training sessions across the Tech Support Team; opened communication channels with Product and other stakeholders.',
-      'Achieved highest CSAT score (9.5) both years, being the greatest team contributor for this KPI.',
-      'Handled internal escalations on complex technical and customer-handling cases, driving them toward resolution.',
-    ],
-  },
-  {
-    title: 'Software Engineer',
-    company: 'IBM',
-    period: '2012 – 2014',
-    bullets: [
-      'After 6 months, took ownership of the most demanding build — the foundation for at least 5 major products.',
-      'Improved build time by 30% by automating processes using ANT and Bash scripting.',
-      'Minimized dependency on developers by troubleshooting and identifying bugs and their source.',
-      'Reduced build server manual maintenance tasks through Bash scripting automation.',
-    ],
-  },
-  {
-    title: 'Jr Security Consultant',
-    company: 'ITlligent',
-    period: '2011 – 2012',
-    bullets: [
-      'Risk assessment, penetration testing, vulnerability assessment, and network monitoring for a wide range of companies from Mexico and LATAM.',
+      'Eight years across senior technical support, team lead, and support manager roles at Ooyala (OVP/live streaming) and a software build engineer role at IBM.',
+      'Built deep working knowledge of HLS/DASH, player SDKs, ABR, encoding, DRM, and live-streaming reliability — the engineering foundation underpinning current pre-sales work.',
+      'Key results: raised live-streaming uptime visibility to 99.9%; lifted CSAT from 8.0 to 9.5; reduced escalations 50% WoW as Player and Mobile SDK SME.',
     ],
   },
 ];
 ---
 <section id="experience" class="py-20 px-8 md:px-16 bg-sidebar-bg">
   <div class="max-w-4xl">
-    <!-- Heading -->
     <div class="animate-on-scroll mb-12">
       <p class="text-brand text-xs font-semibold uppercase tracking-widest mb-2">Experience</p>
       <h2 class="font-serif text-3xl md:text-4xl text-gray-900">Work Experience</h2>
       <div class="w-12 h-0.5 bg-brand mt-4"></div>
     </div>
 
-    <!-- Timeline -->
     <ul class="relative border-l border-gray-200 ml-1.5">
       {jobs.map((job) => (
         <TimelineEntry

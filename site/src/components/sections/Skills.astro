@@ -1,16 +1,48 @@
 ---
-import SkillBar from '@components/ui/SkillBar.astro';
-
-const skills = [
-  { name: 'MEDDPICC / Sales Methodology', percent: 90, colorClass: 'bg-brand' },
-  { name: 'Discovery & SOW Design', percent: 95, colorClass: 'bg-brand-red' },
-  { name: 'Cloud Playout & Broadcast', percent: 90, colorClass: 'bg-brand-yellow' },
-  { name: 'HLS / DASH / CMAF', percent: 90, colorClass: 'bg-brand-purple' },
-  { name: 'SSAI & Ad Insertion (SCTE-35)', percent: 85, colorClass: 'bg-brand-teal' },
-  { name: 'FAST Platform Distribution', percent: 85, colorClass: 'bg-brand-indigo' },
-  { name: 'Low-Latency Live Streaming', percent: 85, colorClass: 'bg-brand' },
-  { name: 'AWS Elemental / GCP Infra', percent: 80, colorClass: 'bg-brand-red' },
-  { name: 'Executive Presentations', percent: 90, colorClass: 'bg-brand-teal' },
+const categories = [
+  {
+    title: 'Sales & Methodology',
+    accent: 'border-brand',
+    skills: [
+      'MEDDPICC',
+      'Discovery Design',
+      'Technical Proposal & SOW Authoring',
+      'POC Scoping',
+      'Executive Presentations',
+      'Competitive Positioning',
+      'Cross-functional Product Influence',
+    ],
+  },
+  {
+    title: 'Cloud Broadcast & Streaming',
+    accent: 'border-brand-red',
+    skills: [
+      'Cloud Playout',
+      'SCTE-35 / Ad Insertion',
+      'SSAI',
+      'HLS / DASH / CMAF',
+      'Low-Latency Live',
+      'Live-to-VOD',
+      'HEVC',
+      'AWS Elemental',
+      'GCP Compute & Interconnect',
+      'Ateme',
+    ],
+  },
+  {
+    title: 'Industry Domain',
+    accent: 'border-brand-yellow',
+    skills: [
+      'FAST',
+      'RSN',
+      'D2C / SVOD',
+      'OTT',
+      'EPG',
+      'Master Control',
+      'Sports Rights Workflows',
+      'Single Live Event',
+    ],
+  },
 ];
 ---
 <section id="skills" class="py-20 px-8 md:px-16 bg-sidebar-bg">
@@ -21,9 +53,18 @@ const skills = [
       <div class="w-12 h-0.5 bg-brand mt-4"></div>
     </div>
 
-    <div class="grid grid-cols-1 md:grid-cols-2 gap-x-12 gap-y-6">
-      {skills.map((skill) => (
-        <SkillBar name={skill.name} percent={skill.percent} colorClass={skill.colorClass} />
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+      {categories.map(({ title, accent, skills }) => (
+        <div class={`bg-white rounded-xl p-6 border-l-4 ${accent} shadow-sm animate-on-scroll`}>
+          <h3 class="font-serif text-lg text-gray-900 mb-4">{title}</h3>
+          <div class="flex flex-wrap gap-2">
+            {skills.map((skill) => (
+              <span class="text-xs font-medium text-gray-600 bg-gray-100 px-2.5 py-1 rounded-full">
+                {skill}
+              </span>
+            ))}
+          </div>
+        </div>
       ))}
     </div>
   </div>

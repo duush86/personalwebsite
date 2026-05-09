@@ -1,0 +1,108 @@
+---
+title: "Understanding Video Streaming Protocols: HLS, DASH, and Beyond"
+description: "A practical breakdown of adaptive bitrate streaming protocols — what they are, how they differ, and when to use each one."
+pubDate: 2026-05-09
+tags: ["video", "streaming", "hls", "dash", "brightcove"]
+heroImage: "/images/blog-1.jpg"
+draft: false
+---
+
+After years working in the video streaming space — first at Ooyala and now at Brightcove — one of the most common questions I get from developers and product teams is: **"What's the difference between HLS and DASH, and which should I use?"**
+
+The short answer is: it depends. But let me give you the longer, more useful answer.
+
+## What is Adaptive Bitrate Streaming?
+
+Before diving into protocols, it's worth understanding what problem they're solving. Video files are large. A single minute of 1080p video can be hundreds of megabytes. Sending that as a single file over the internet means your player has to buffer the entire thing before starting — not great for user experience.
+
+**Adaptive Bitrate Streaming (ABR)** solves this by breaking video into small chunks (typically 2–10 seconds each) and encoding each chunk at multiple quality levels. The player picks the best quality chunk based on current network conditions. This is why Netflix can start playing in 2 seconds and seamlessly adjust quality when your Wi-Fi gets congested.
+
+## HLS — HTTP Live Streaming
+
+Developed by **Apple** and introduced in 2009, HLS is the most widely supported streaming format today. It works by serving a playlist file (`.m3u8`) that points to the actual video segments (`.ts` or `.fmp4`).
+
+```
+# Example HLS master playlist
+#EXTM3U
+#EXT-X-VERSION:6
+
+#EXT-X-STREAM-INF:BANDWIDTH=800000,RESOLUTION=640x360
+360p/index.m3u8
+
+#EXT-X-STREAM-INF:BANDWIDTH=3000000,RESOLUTION=1280x720
+720p/index.m3u8
+
+#EXT-X-STREAM-INF:BANDWIDTH=6000000,RESOLUTION=1920x1080
+1080p/index.m3u8
+```
+
+**When to use HLS:**
+- You need to support Apple devices (it's the only format supported natively in Safari on iOS)
+- You're targeting a broad audience across all devices
+- You need DRM support (FairPlay works exclusively with HLS on Apple)
+
+## DASH — Dynamic Adaptive Streaming over HTTP
+
+**MPEG-DASH** (Dynamic Adaptive Streaming over HTTP) is the international standard, developed by MPEG and standardized in 2012. It uses an XML manifest file called an **MPD** (Media Presentation Description).
+
+```xml
+<!-- Simplified DASH MPD -->
+<MPD xmlns="urn:mpeg:dash:schema:mpd:2011" minBufferTime="PT1.5S">
+  <Period>
+    <AdaptationSet mimeType="video/mp4">
+      <Representation id="360p" bandwidth="800000" width="640" height="360">
+        <BaseURL>360p/</BaseURL>
+        <SegmentTemplate media="seg-$Number$.m4s" initialization="init.mp4" />
+      </Representation>
+      <Representation id="1080p" bandwidth="6000000" width="1920" height="1080">
+        <BaseURL>1080p/</BaseURL>
+        <SegmentTemplate media="seg-$Number$.m4s" initialization="init.mp4" />
+      </Representation>
+    </AdaptationSet>
+  </Period>
+</MPD>
+```
+
+**When to use DASH:**
+- You need codec flexibility (DASH is codec-agnostic; HLS is more limited)
+- You're targeting Android or desktop-first audiences
+- You need Widevine or PlayReady DRM (both work well with DASH)
+
+## The Practical Reality: You'll Probably Need Both
+
+In production, most video platforms — Brightcove included — package content in both HLS and DASH and use player-side logic to pick the right one:
+
+```javascript
+// Brightcove Player automatically picks the right source
+var player = videojs('my-video');
+player.src([
+  { type: 'application/x-mpegURL', src: 'video.m3u8' },  // HLS
+  { type: 'application/dash+xml', src: 'video.mpd' },      // DASH
+]);
+```
+
+The player will use HLS on Safari/iOS and DASH on Chrome/Firefox/Android, with a fallback chain.
+
+## Smooth Streaming — Worth Knowing
+
+**Microsoft Smooth Streaming** is older and largely legacy at this point, but you'll still encounter it in enterprise environments, especially anything integrated with older Microsoft or Silverlight-based systems. It uses `.ism` manifests and `.ismv` segments.
+
+Unless you have a specific requirement (usually legacy DRM or a specific CDN config), I'd recommend not targeting Smooth Streaming for new builds.
+
+## Key Takeaways
+
+| Feature | HLS | DASH |
+|---|---|---|
+| Developed by | Apple | MPEG |
+| Manifest format | `.m3u8` (plain text) | `.mpd` (XML) |
+| Native iOS/Safari support | ✅ Yes | ❌ No |
+| Codec flexibility | Moderate | High |
+| DRM | FairPlay, Widevine | Widevine, PlayReady |
+| Latency (standard) | 6–30s | 2–10s |
+| Low-latency variant | LL-HLS | LL-DASH |
+
+For most production use cases: **encode for both, let the player decide**.
+
+---
+
+Have questions about video streaming or working with Brightcove APIs? Feel free to reach out.

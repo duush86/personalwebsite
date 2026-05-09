@@ -1,0 +1,32 @@
+---
+import SkillBar from '@components/ui/SkillBar.astro';
+
+const skills = [
+  { name: 'REST APIs', percent: 100, colorClass: 'bg-brand' },
+  { name: 'JavaScript', percent: 70, colorClass: 'bg-brand-red' },
+  { name: 'Web Development', percent: 80, colorClass: 'bg-brand-yellow' },
+  { name: 'Bash', percent: 80, colorClass: 'bg-brand-purple' },
+  { name: 'Ruby', percent: 80, colorClass: 'bg-brand-teal' },
+  { name: 'Swift', percent: 70, colorClass: 'bg-brand-indigo' },
+  { name: 'Video Formats (HLS, DASH, Smooth, MP4)', percent: 90, colorClass: 'bg-brand' },
+  { name: 'Monetization (SSAI & CSAI)', percent: 70, colorClass: 'bg-brand-red' },
+  { name: 'CDN', percent: 90, colorClass: 'bg-brand-teal' },
+];
+---
+<section id="skills" class="py-20 px-8 md:px-16 bg-sidebar-bg">
+  <div class="max-w-4xl">
+    <!-- Heading -->
+    <div class="animate-on-scroll mb-10">
+      <p class="text-brand text-xs font-semibold uppercase tracking-widest mb-2">Skills</p>
+      <h2 class="font-serif text-3xl md:text-4xl text-gray-900">My Technical Skills</h2>
+      <div class="w-12 h-0.5 bg-brand mt-4"></div>
+    </div>
+
+    <!-- Skills grid -->
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-x-12 gap-y-6">
+      {skills.map((skill) => (
+        <SkillBar name={skill.name} percent={skill.percent} colorClass={skill.colorClass} />
+      ))}
+    </div>
+  </div>
+</section>

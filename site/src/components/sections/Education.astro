@@ -1,0 +1,69 @@
+---
+import EducationEntry from '@components/ui/EducationEntry.astro';
+
+const entries = [
+  {
+    title: 'Bachelor Degree — Computer Science',
+    institution: 'ITESM Campus Morelia',
+    period: '2004–2010',
+    description:
+      'Study plan mainly focused on software development (hands-on), processes in software development, networking (CISCO CCNA), and artificial intelligence.',
+    open: true,
+  },
+  {
+    title: 'Diploma in Management Skills',
+    institution: 'ITESO Guadalajara',
+    period: 'In progress',
+    description: 'Currently on course. Provided by the ITESO university in Guadalajara, Mexico.',
+    link: {
+      text: 'View programme details',
+      href: 'https://diplomados.iteso.mx/en/web/general/detalle?group_id=203735',
+    },
+  },
+  {
+    title: 'AWS Certified Solutions Architect Associate',
+    institution: 'Udemy',
+    period: 'In progress',
+    description:
+      'Pursuing the certification through the AWS Solutions Architect Associate course on Udemy.',
+    link: {
+      text: 'View course',
+      href: 'https://www.udemy.com/aws-certified-solutions-architect-associate/',
+    },
+  },
+  {
+    title: 'Swift Development Bootcamp',
+    institution: 'Udemy',
+    period: 'Completed',
+    description: 'Completed the iOS App Development Bootcamp covering Swift and iOS development.',
+    link: {
+      text: 'View course',
+      href: 'https://www.udemy.com/ios-12-app-development-bootcamp/',
+    },
+  },
+];
+---
+<section id="education" class="py-20 px-8 md:px-16 bg-white">
+  <div class="max-w-4xl">
+    <!-- Heading -->
+    <div class="animate-on-scroll mb-10">
+      <p class="text-brand text-xs font-semibold uppercase tracking-widest mb-2">Education</p>
+      <h2 class="font-serif text-3xl md:text-4xl text-gray-900">Education</h2>
+      <div class="w-12 h-0.5 bg-brand mt-4"></div>
+    </div>
+
+    <!-- Accordion entries -->
+    <div class="animate-on-scroll space-y-3">
+      {entries.map((entry) => (
+        <EducationEntry
+          title={entry.title}
+          institution={entry.institution}
+          period={entry.period}
+          description={entry.description}
+          link={entry.link}
+          open={entry.open}
+        />
+      ))}
+    </div>
+  </div>
+</section>

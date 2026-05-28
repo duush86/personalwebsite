@@ -1,0 +1,21 @@
+---
+title: "Hello world!"
+description: "Why?"
+pubDate: 2026-06-28
+tags: ["new"]
+draft: true
+---
+
+Hello stranger, welcome to the 2000s and to this blog. 
+
+For my first post, and in order to commit myself to do it, I will be writing about SCTE markers. Ya would think, “well, he’s going to talk about ad workflows and the importance of SCTE-35  markers on SSAI workflow, right?” That’s exactly what I want to avoid you all to think. I would like to take a step back and talk about why SCTE-35 exists, the transition from SCTE-104 to SCTE-35, the origin of SCTE-104, what problem were they solving back in the day, and how that problem evolved to not only addressing a monetization challenge, but how the SCTE-35 standard is a business layer that goes above and beyond “That's all you use to signal your ad breaks!”
+
+In this blog, I want to share knowledge I have gathered in +10 years on the video streaming industry; I want to share things that for me were hard to understand or even hard to find any information online, for some I had to learn the hard way, with real customer experience, real opportunities, real wins, real losses. I want to make this accessible for those in the position I was 10 years ago.
+
+I’ve always enjoyed writing about stuff and sharing what I know. That’s why this stranger who’s a Fútbol and tech enthusiast to the bone, runner, father, husband, son; born and raised in Moroleon, Guanajuato almost 40 years ago hopes to give something back to this community. 
+
+If this helps one person, anywhere in the world, that’s a win for that boy who 10 years ago was eager to learn but was lost in the sea of information without any context.
+
+Stay tuned. 
+
+-Antonio. 

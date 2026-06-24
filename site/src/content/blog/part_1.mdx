@@ -1,0 +1,78 @@
+---
+title: "Part 1 - Why are we here?!"
+description: "Why are we here?"
+pubDate: 2026-06-24
+tags: ["new","scte-35"]
+draft: true
+---
+
+Welcome back, stranger.
+
+In my first post, I promised we’d take a step back from modern ad workflows and look at why SCTE-35 exists. To really appreciate the standard we use today, we have to look at the growing pains of video broadcasting. As someone who spends his days deep in systems engineering trying to keep these complex pipelines from falling apart, I always find it helpful to map technical hurdles to things we interact with every day.
+
+Let’s talk about how communication mechanisms in the video world evolved, using the analogy of cellphones and messaging devices.
+
+Back in the day, the small regional cable headends had a significant challenge selling and trafficking local ads. The problem was purely operational. How does a small cable headend in the US Midwest know exactly when to cut away from the national feed and run a local car dealership spot? The national broadcasters syndicated the national feed with a [DTMF tone burst or a dedicated audio subcarriers cue tone that signaled the start and end of a program break or of the program itself.](https://youtube.com/playlist?list=PLGRsIoh3uBOLXIxH4018buGKTKWatibTs\&si=GEqGylMiqmJu_1In) The local cable headend had a cue tone decoder sitting, listening to an audio channel previously agreed, and when it detected the tone, it triggered the local ad or program insertion equipment.&#x20;
+
+Think on DTMF tones as the telegraph. Sure, the telegraph allowed you to send and receive messages to and from remote places, but it came with massive challenges. If your message required multiple hops to reach its destination, there was a high risk it would degrade or get lost along the way. But most importantly, you weren’t able to send complex messages. With DTMF tones, the only thing you could send was a primitive cue: “Hey, you have the opportunity to do something starting right here.” You just had to cross your fingers and hope the receiving equipment actually knew what to do with that signal.
+
+As cable systems grew and headend operations became more sophisticated, the primitive DTMF tone wasn’t enough. Operators needed more control. Duration metadata, program identification, blackout rules for sports rights. You can’t do that with a tone. [SCTE-104](https://account.scte.org/standards/library/catalog/scte-104-automation-system-to-compression-system-communications-api/) was the industry’s answer to increasingly complex rights management and ad trafficking requirements inside the baseband plant.&#x20;
+
+Let’s talk about the baseband environment. SDI signal, coax cable running from point to point inside the plant, with video, audio, and ancillary data (ANC), included SCTE-104 splice requests riding on the VANC (Vertical ANC). These SCTE-104 splice request have the capability to carry instructions like:&#x20;
+
+* “Start an ad opportunity in 4 seconds, duration 30 seconds”
+* “End the current program segment”
+* “This is a blackout zone”
+
+Think of baseband SCTE-104 like BlackBerry Messenger (BBM). If you had a BlackBerry back in the day, BBM was the absolute best. It worked flawlessly—as long as you stayed entirely within the BlackBerry environment. Baseband SCTE-104 is very much the same. It’s incredibly effective and robust within its own closed ecosystem, but the moment you try to reach outside of that specific environment, things fall apart. You’re isolated.
+
+For the sake of this story, let’s set aside the exact timeline. SCTE-104 was a perfect solution for the baseband world, and as soon as the signal had to leave that world, to more complex paths across different systems; DTMF (Dual-Tone Multi-Frequency) offered a solution that worked technologically for the times. However, with multiple satellite hops the DTMF tones were degraded, there was no payload and no context and even severe vendor-dependent dependencies that limited their ability to support complex, reliant business logic.
+
+These limitations are exactly why [SCTE-35](https://account.scte.org/standards/library/catalog/scte-35-1-digital-program-insertion-cueing-message-part-1-legacy-splice-based-and-time-based-signaling/) was developed. The industry needed a universal way to carry real, actionable data across multiple hops without losing the intent of the message.
+
+If DTMF is the telegraph and BBM was the isolated baseband, Type-5 messages are the equivalent of old-school SMS (think pre-WhatsApp, early smartphone days). Suddenly, you had a standard that could reach all types of devices. You could take advantage of different types of messages, and crucially, the message was preserved after multiple forwarding hops. You could finally send instructions across the entire video delivery chain and trust that the downstream systems would receive the data.
+
+SCTE-35 messages ride over MPEG-TS, a transport stream, commonly used to move video packages on the WAN; exactly: beyond baseband. Nowadays, SCTE-35 markers are commonly converted on the ground from their SCTE-104 equivalent by a SDI-to-MPEG-TS, and preserved into their own PID on the TS PMT - Program Map Table - This is where the SCTE-35’s PID is officially registered. Any misconfiguration on this translation, and the downstream systems won’t be able to know where to look for it, even if the SCTE-35 packets are present in the stream. This allows SCTE-35 to be preserved on a MPEG-TS stream over multiple hops on SRT, RTP, RIST workflows.&#x20;
+
+When a downstream system receives a SCTE-35 splice\_insert, it’s communicating exactly one thing: “Cut away from this program at this moment, for this duration, then come back.”
+
+Think of this splice\_insert as a two-message system:&#x20;
+
+* `Splice_insert with out_of_network = TRUE —> Leave the program here. Break starts  — Ad plays — `
+* `Splice_insert with out_of_network = FALSE —> Return to network here. Break ends. `
+
+This is called the out/in pair pattern. The “out” message triggers the cut to local ad content. The “in” message triggers the return to network programming. A variation of this two-message system would be the auto\_return flag set to true, where the second message (out\_of\_network \= FALSE) is not required as the message signals that it will return to the program after the break length.&#x20;
+
+Here’s what one of these messages actually looks like:
+
+```txt
+splice_insert {
+    splice_event_id          → unique ID for this event (matches out/in pair)
+    splice_event_cancel      → set to 1 to cancel a previously sent event
+    out_of_network_indicator → 1 = going to ad, 0 = returning to network
+    program_splice_flag      → 1 = applies to whole program (most common)
+    duration_flag            → 1 = break duration is specified
+    splice_immediate_flag    → 1 = splice NOW, don't wait for splice_time
+    splice_time {
+        time_specified_flag  → 1 = specific PTS timestamp provided
+        pts_time             → the exact PTS timestamp to execute splice
+    }
+    break_duration {
+        auto_return          → 1 = auto-return to network after duration
+        duration             → break length in 90kHz ticks
+    }
+    unique_program_id        → identifies the program (from SCTE-104)
+    avail_num                → which avail this is (1, 2, 3...)
+    avails_expected          → total avails in this break
+}
+```
+
+Type-5 was a huge advancement for the industry. It gave us the reliability and reach we desperately needed. However, just like old-school SMS, the business needs of new markets  eventually made it hit its own limitations. As our industry evolved, we started needing advanced messaging—custom payloads, complex blackout rules, and the myriad different segmentation types and use cases that modern workflows demand.
+
+That brings us to the door of SCTE-35 Type-6 messages. But we’ll leave that advanced conversation for the third and final part of this series.
+
+Stay tuned.
+
+
+
+-Antonio.
